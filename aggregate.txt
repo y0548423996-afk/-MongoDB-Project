@@ -1,0 +1,36 @@
+פרוייקט 
+חלק ד
+index✅✅✅
+מקל על חיפוש כרטיסים של ארוע מסוים 
+ואחכ ממין גם עפ תאריך של קניית הכרטיס
+(שאילתה 2 משתמשת בו)
+db.tickets.createIndex({eventId:1,purchaseDate:1})
+1---
+*סופר את כמות הכרטיסים בכל הופעה*
+db.tickets.explain().aggregate([
+{$group:{_id:"$eventId", totalTickets:{$sum:1}}},
+{$sort:{totalTickets:-1}},
+{$limit:2}
+])
+2---
+שליפת כרטיסים לארוע מסוים אבל שנקנו אחרי תאריך מסוים
+db.tickets.explain().aggregate([
+{$match:{
+purchaseDate:{$gte: ISODate("2025-07-01T00:00:00Z")},
+eventId:6}},
+{$project:
+{_id:0,ticketId:1,buyerName:1,"seat.section":1}}
+])
+--3
+חיבור משתמשים עם הכרטיסים שלו
+db.users.aggregate([
+{
+$lookup:{
+from:"tickets",
+localField:"tickets",
+foreignField:"ticketId" ,
+ as:"userTickets" 
+}}
+ ] )
+ 
+ 

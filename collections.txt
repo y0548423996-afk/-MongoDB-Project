@@ -1,0 +1,648 @@
+פרוייקט
+mongosh "mongodb+srv://cluster0.85psrkt.mongodb.net/" --apiVersion 1 --username ditishraga
+password:216234179
+use tickchack
+חלק ב
+הערות
+לשנות את הID
+להוסיף אינדקס לכל FIND
+להוסיף נתון האם הכרטיס נקנה או לא.....
+הופעות////////////////////////////////////////////////////////////////////////////////////////////////////
+db.events.insertMany([
+{
+  id:1,
+  type: "הופעה",
+  category: "שירה",
+  title: "ערב פיוטים עם חיים ישראל",
+  eventDate: new Date("2025-07-10"),          
+  eventTime: "20:30",                          
+  durationMinutes: 90,                        
+  location: {
+    hall: "אודיטוריום מרכזי",
+    city: "בני ברק"
+  },
+  price: 90,
+  availableTickets: 150,
+  organizerId:2
+},
+{
+  id: 2,
+  type: "כנס",
+  category: "חיזוק",
+  title: "כנס התחזקות שנתי עם הרב זמיר כהן",
+  eventDate: new Date("2025-08-20"),
+  eventTime: "19:00",
+  durationMinutes: 120,
+  location: {
+    hall: "היכל התרבות ירושלים",
+    city: "ירושלים"
+  },
+  price: 50,
+  availableTickets: 300,
+  organizerId: 3
+},
+{
+  id: 3,
+  type: "הופעה",
+  category: "ריקוד",
+  title: "מופע ריקוד אתני של להקת שלווה",
+  eventDate:new Date("2025-07-25"),
+  eventTime: "21:00",
+  durationMinutes: 75,
+  location: {
+    hall: "היכל שלמה",
+    city: "תל אביב"
+  },
+  price: 80,
+  availableTickets: 200,
+  organizerId:1
+},
+{
+  id: 4,
+  type: "הופעה",
+  category: "בידור",
+  title: "ערב סטנדאפ עם תמי לוי",
+  eventDate:new Date("2025-06-18"),
+  eventTime: "20:15",
+  durationMinutes: 60,
+  location: {
+    hall: "אולם רוזנפלד",
+    city: "פתח תקווה"
+  },
+  price: 65,
+  availableTickets: 120,
+  organizerId:5
+},
+{
+  id: 5,
+  type: "כנס",
+  category: "כנס מקצוענים",
+  title: "TechWomen 2025 – חדשנות לנשים בהייטק",
+  eventDate: new Date("2025-09-02"),
+  eventTime: "09:00",
+  durationMinutes: 180,
+  location: {
+    hall: "מרכז הכנסים הבינלאומי",
+    city: "חיפה"
+  },
+  price: 100,
+  availableTickets: 250,
+  organizerId: 2
+},
+{
+  id: 6,
+  type: "הופעה",
+  category: "שירה",
+  title: "מקהלת ילדי ירושלים – קונצרט קיץ",
+  eventDate:new Date("2025-07-30"),
+  eventTime: "18:30",
+  durationMinutes: 90,
+  location: {
+    hall: "מנהל קהילתי רמות",
+    city: "ירושלים"
+  },
+  price: 40,
+  availableTickets: 150,
+  organizerId: 4
+},
+{
+  id: 7,
+  type: "הופעה",
+  category: "בידור",
+  title: "מופע קסמים חינוכי לילדים",
+  eventDate:new Date("2025-08-15"),
+  eventTime: "17:00",
+  durationMinutes: 60,
+  location: {
+    hall: "אודיטוריום גני תקווה",
+    city: "גני תקווה"
+  },
+  price: 30,
+  availableTickets: 180,
+  organizerId: 3
+},
+{
+  id: 8,
+  type: "הופעה",
+  category: "ריקוד",
+  title: "להקת בת שבע – מופע מחול מודרני",
+  eventDate:new Date("2025-08-15"),
+  eventTime: "20:00",
+  durationMinutes: 75,
+  location: {
+    hall: "היכל התרבות",
+    city: "תל אביב"
+  },
+  price: 95,
+  availableTickets: 300,
+  organizerId:1
+},
+{
+  id: 9,
+  type: "כנס",
+  category: "חיזוק",
+  title: "כנס השראה לצעירים – עוצמה פנימית",
+  eventDate:new Date("2025-07-25"),
+  eventTime: "19:30",
+  durationMinutes: 120,
+  location: {
+    hall: "היכל התרבות העירוני",
+    city: "נתניה"
+  },
+  price: 50,
+  availableTickets: 220,
+  organizerId: 2
+},
+{
+  id: 10,
+  type: "הופעה",
+  category: "שירה",
+  title: "שרים עם יעקב שוואקי מופע קיץ",
+  eventDate:new Date("2025-08-20"),
+  eventTime: "21:00",
+  durationMinutes: 90,
+  location: {
+    hall: "אמפי פארק גבעת שמואל",
+    city: "גבעת שמואל"
+  },
+  price: 60,
+  availableTickets: 400,
+  organizerId: 1
+}
+])
+
+
+
+כרטיסים///////////////////////////////////////////////////////////////////////////////////////////////
+
+db.tickets.insertMany([
+  {
+    "ticketId": "tick1",
+    "eventId": 1,
+    "buyerName": "חיים גרוסמן",
+    "purchaseDate": ISODate("2025-06-01T14:25:00Z"),
+    "seat": { "section": "מרכז", "row": 5, "seatNumber": 12 },
+    "price": 90
+  },
+  {
+    "ticketId": "tick2",
+    "eventId": 3,
+    "buyerName": "חיים גרוסמן",
+    "purchaseDate": ISODate("2025-07-23T15:17:00Z"),
+    "seat": { "section": "ימין", "row": 3, "seatNumber": 7 },
+    "price": 80
+  },
+  {
+    "ticketId": "tick3",
+    "eventId": 7,
+    "buyerName": "חיים גרוסמן",
+    "purchaseDate": ISODate("2025-08-03T16:07:00Z"),
+    "seat": { "section": "שמאל", "row": 2, "seatNumber": 9 },
+    "price": 30
+  },
+  {
+    "ticketId": "tick4",
+    "eventId": 2,
+    "buyerName": "מלכה כהן",
+    "purchaseDate": ISODate("2025-08-19T17:49:00Z"),
+    "seat": { "section": "מרכז", "row": 1, "seatNumber": 10 },
+    "price": 50
+  },
+  {
+    "ticketId": "tick5",
+    "eventId": 5,
+    "buyerName": "משה קפלן",
+    "purchaseDate": ISODate("2025-08-29T18:58:00Z"),
+    "seat": { "section": "ימין", "row": 6, "seatNumber": 11 },
+    "price": 65
+  },
+  {
+    "ticketId": "tick6",
+    "eventId": 5,
+    "buyerName": "משה קפלן",
+    "purchaseDate": ISODate("2025-08-26T15:15:00Z"),
+    "seat": { "section": "שמאל", "row": 4, "seatNumber": 8 },
+    "price": 100
+  },
+  {
+    "ticketId": "tick7",
+    "eventId": 1,
+    "buyerName": "רבקה פרידמן",
+    "purchaseDate": ISODate("2025-07-08T17:02:00Z"),
+    "seat": { "section": "מרכז", "row": 3, "seatNumber": 5 },
+    "price": 90
+  },
+  {
+    "ticketId": "tick8",
+    "eventId": 2,
+    "buyerName": "יעקב דינר",
+    "purchaseDate": ISODate("2025-08-08T14:45:00Z"),
+    "seat": { "section": "ימין", "row": 7, "seatNumber": 14 },
+    "price": 50
+  },
+  {
+    "ticketId": "tick9",
+    "eventId": 6,
+    "buyerName": "יעקב דינר",
+    "purchaseDate": ISODate("2025-07-19T12:05:00Z"),
+    "seat": { "section": "שמאל", "row": 5, "seatNumber": 6 },
+    "price": 40
+  },
+  {
+    "ticketId": "tick10",
+    "eventId": 9,
+    "buyerName": "יעקב דינר",
+    "purchaseDate": ISODate("2025-07-10T00:25:00Z"),
+    "seat": { "section": "מרכז", "row": 8, "seatNumber": 20 },
+    "price": 50
+  },
+  {
+    "ticketId": "tick11",
+    "eventId": 3,
+    "buyerName": "פנינה הורוביץ",
+    "purchaseDate": ISODate("2025-07-11T23:38:00Z"),
+    "seat": { "section": "ימין", "row": 2, "seatNumber": 15 },
+    "price": 80
+  },
+  {
+    "ticketId": "tick12",
+    "eventId": 1,
+    "buyerName": "שלמה בלוי",
+    "purchaseDate": ISODate("2025-07-01T23:52:00Z"),
+    "seat": { "section": "שמאל", "row": 6, "seatNumber": 10 },
+    "price": 90
+  },
+  {
+    "ticketId": "tick13",
+    "eventId": 8,
+    "buyerName": "שלמה בלוי",
+    "purchaseDate": ISODate("2025-08-13T20:17:00Z"),
+    "seat": { "section": "מרכז", "row": 7, "seatNumber": 9 },
+    "price": 95
+  },
+  {
+    "ticketId": "tick14",
+    "eventId": 2,
+    "buyerName": "דבורה רוזנברג",
+    "purchaseDate": ISODate("2025-08-01T15:22:00Z"),
+    "seat": { "section": "ימין", "row": 4, "seatNumber": 12 },
+    "price": 50
+  },
+  {
+    "ticketId": "tick15",
+    "eventId": 4,
+    "buyerName": "דבורה רוזנברג",
+    "purchaseDate": ISODate("2025-06-15T15:04:00Z"),
+    "seat": { "section": "שמאל", "row": 1, "seatNumber": 7 },
+    "price": 65
+  },
+  {
+    "ticketId": "tick16",
+    "eventId": 5,
+    "buyerName": "אהרן קצבורג",
+    "purchaseDate": ISODate("2025-09-01T15:50:00Z"),
+    "seat": { "section": "מרכז", "row": 3, "seatNumber": 11 },
+    "price": 100
+  },
+  {
+    "ticketId": "tick17",
+    "eventId": 1,
+    "buyerName": "שרה קלר",
+    "purchaseDate": ISODate("2025-07-09T14:35:00Z"),
+    "seat": { "section": "ימין", "row": 5, "seatNumber": 13 },
+    "price": 90
+  },
+  {
+    "ticketId": "tick18",
+    "eventId": 3,
+    "buyerName": "שרה קלר",
+    "purchaseDate": ISODate("2025-07-18T13:55:00Z"),
+    "seat": { "section": "שמאל", "row": 8, "seatNumber": 18 },
+    "price": 80
+  },
+  {
+    "ticketId": "tick19",
+    "eventId": 6,
+    "buyerName": "שרה קלר",
+    "purchaseDate": ISODate("2025-07-29T18:15:00Z"),
+    "seat": { "section": "מרכז", "row": 2, "seatNumber": 4 },
+    "price": 40
+  },
+  {
+    "ticketId": "tick20",
+    "eventId": 7,
+    "buyerName": "יואל בוימל",
+    "purchaseDate": ISODate("2025-08-10T11:35:00Z"),
+    "seat": { "section": "ימין", "row": 6, "seatNumber": 21 },
+    "price": 30
+  },
+  {
+    "ticketId": "tick21",
+    "eventId": 2,
+    "buyerName": "מלכה כהן",
+    "purchaseDate": ISODate("2025-08-15T10:17:00Z"),
+    "seat": { "section": "ימין", "row": 1, "seatNumber": 5 },
+    "price": 50
+  },
+  {
+    "ticketId": "tick22",
+    "eventId": 4,
+    "buyerName": "משה קפלן",
+    "purchaseDate": ISODate("2025-06-01T14:02:00Z"),
+    "seat": { "section": "מרכז", "row": 2, "seatNumber": 8 },
+    "price": 65
+  },
+  {
+    "ticketId": "tick23",
+    "eventId": 6,
+    "buyerName": "יעקב דינר",
+    "purchaseDate": ISODate("2025-07-23T14:28:00Z"),
+    "seat": { "section": "שמאל", "row": 3, "seatNumber": 12 },
+    "price": 40
+  },
+  {
+    "ticketId": "tick24",
+    "eventId": 8,
+    "buyerName": "שלמה בלוי",
+    "purchaseDate": ISODate("2025-08-07T12:34:00Z"),
+    "seat": { "section": "מרכז", "row": 4, "seatNumber": 10 },
+    "price": 95
+  },
+  {
+    "ticketId": "tick25",
+    "eventId": 10,
+    "buyerName": "שרה קלר",
+    "purchaseDate": ISODate("2025-08-15T14:49:00Z"),
+    "seat": { "section": "ימין", "row": 5, "seatNumber": 6 },
+    "price": 60
+  },
+  {
+    "ticketId": "tick26",
+    "eventId": 1,
+    "buyerName": "דבורה רוזנברג",
+    "purchaseDate": ISODate("2025-06-26T14:58:00Z"),
+    "seat": { "section": "שמאל", "row": 7, "seatNumber": 4 },
+    "price": 90
+  },
+  {
+    "ticketId": "tick27",
+    "eventId": 3,
+    "buyerName": "פנינה הורוביץ",
+    "purchaseDate": ISODate("2025-07-24T19:05:00Z"),
+    "seat": { "section": "ימין", "row": 8, "seatNumber": 9 },
+    "price": 80
+  },
+  {
+    "ticketId": "tick28",
+    "eventId": 7,
+    "buyerName": "יואל בוימל",
+    "purchaseDate": ISODate("2025-08-14T15:14:00Z"),
+    "seat": { "section": "מרכז", "row": 6, "seatNumber": 11 },
+    "price": 30
+  },
+  {
+    "ticketId": "tick29",
+    "eventId": 4,
+    "buyerName": "רבקה פרידמן",
+    "purchaseDate": ISODate("2025-06-17T15:25:00Z"),
+    "seat": { "section": "ימין", "row": 4, "seatNumber": 7 },
+    "price": 65
+  },
+  {
+    "ticketId": "tick30",
+    "eventId": 6,
+    "buyerName": "אהרן קצבורג",
+    "purchaseDate": ISODate("2025-07-15T15:38:00Z"),
+    "seat": { "section": "שמאל", "row": 1, "seatNumber": 3 },
+    "price": 40
+  },
+  {
+    "ticketId": "tick31",
+    "eventId": 1,
+    "buyerName": "חיים גרוסמן",
+    "purchaseDate": ISODate("2025-07-05T14:41:00Z"),
+    "seat": { "section": "מרכז", "row": 8, "seatNumber": 15 },
+    "price": 90
+  },
+  {
+    "ticketId": "tick32",
+    "eventId": 3,
+    "buyerName": "מלכה כהן",
+    "purchaseDate": ISODate("2025-07-02T18:53:00Z"),
+    "seat": { "section": "ימין", "row": 2, "seatNumber": 5 },
+    "price": 80
+  },
+  {
+    "ticketId": "tick33",
+    "eventId": 8,
+    "buyerName": "משה קפלן",
+    "purchaseDate": ISODate("2025-07-29T16:00:00Z"),
+    "seat": { "section": "מרכז", "row": 3, "seatNumber": 9 },
+    "price": 95
+  },
+  {
+    "ticketId": "tick34",
+    "eventId": 10,
+    "buyerName": "רבקה פרידמן",
+    "purchaseDate": ISODate("2025-08-19T17:11:00Z"),
+    "seat": { "section": "ימין", "row": 1, "seatNumber": 4 },
+    "price": 60
+  },
+  {
+    "ticketId": "tick35",
+    "eventId": 7,
+    "buyerName": "יעקב דינר",
+    "purchaseDate": ISODate("2025-08-05T16:20:00Z"),
+    "seat": { "section": "שמאל", "row": 5, "seatNumber": 8 },
+    "price": 30
+  },
+  {
+    "ticketId": "tick36",
+    "eventId": 4,
+    "buyerName": "פנינה הורוביץ",
+    "purchaseDate": ISODate("2025-06-12T16:38:00Z"),
+    "seat": { "section": "מרכז", "row": 6, "seatNumber": 7 },
+    "price": 65
+  },
+  {
+    "ticketId": "tick37",
+    "eventId": 6,
+    "buyerName": "שלמה בלוי",
+    "purchaseDate": ISODate("2025-07-07T16:40:00Z"),
+    "seat": { "section": "ימין", "row": 3, "seatNumber": 10 },
+    "price": 40
+  },
+  {
+    "ticketId": "tick38",
+    "eventId": 1,
+    "buyerName": "דבורה רוזנברג",
+    "purchaseDate": ISODate("2025-07-08T16:56:00Z"),
+    "seat": { "section": "שמאל", "row": 4, "seatNumber": 12 },
+    "price": 90
+  },
+  {
+    "ticketId": "tick39",
+    "eventId": 3,
+    "buyerName": "אהרן קצבורג",
+    "purchaseDate": ISODate("2025-07-19T17:31:00Z"),
+    "seat": { "section": "מרכז", "row": 7, "seatNumber": 13 },
+    "price": 80
+  },
+  {
+    "ticketId": "tick40",
+    "eventId": 8,
+    "buyerName": "שרה קלר",
+    "purchaseDate": ISODate("2025-08-10T17:10:00Z"),
+    "seat": { "section": "ימין", "row": 2, "seatNumber": 11 },
+    "price": 95
+  }
+  ]);
+
+ משתמשים//////////////////////////////////////////////////////////////////////////////////////////////////
+ db.users.insertMany([
+  {
+    fullName: "חיים גרוסמן",
+    email: "chaim.grossman@gmail.com",
+    phone: "0583215896",
+    tickets: ["tick1", "tick2", "tick3","tick31"],
+    ID_number: "216458756"
+  },
+  {
+    fullName: "מלכה כהן",
+    email: "malka.cohen@gmail.com",
+    phone: "0504111212",
+    tickets: ["tick2","tick4","tick21","tick32"],
+    ID_number: "347982115"
+  },
+  {
+    fullName: "משה קפלן",
+    email: "moshe.kaplan@gmail.com",
+    phone: "0533155675",
+    tickets: ["tick5","tick6","tick22","tick33"],
+    ID_number: "108563429"
+  },
+  {
+    fullName: "רבקה פרידמן",
+    email: "rivka.f@gmail.com",
+    phone: "0527118804",
+    tickets: ["tick7","tick29","tick34"],
+    ID_number: "257943101"
+  },
+  {
+    fullName: "יעקב דינר",
+    email: "yaakov.diner@gmail.com",
+    phone: "0527615615",
+    tickets: ["tick8", "tick9", "tick10","tick23","tick35"],
+    ID_number: "389102456"
+  },
+  {
+    fullName: "פנינה הורוביץ",
+    email: "pnina.horowitz@gmail.com",
+    phone: "0583240999",
+    tickets: ["tick11","tick27","tick36"],
+    ID_number: "148905377"
+  },
+  {
+    fullName: "שלמה בלוי",
+    email: "shlomo.bloy@gmail.com",
+    phone: "0504114833",
+    tickets: ["tick12", "tick13","tick24","tick37"],
+    ID_number: "320578904"
+  },
+  {
+    fullName: "דבורה רוזנברג",
+    email: "devora.r@gmail.com",
+    phone: "0533158119",
+    tickets: ["tick14", "tick15","tick26","tick38"],
+    ID_number: "276349882"
+  },
+  {
+    fullName: "אהרן קצבורג",
+    email: "aharon.katzburg@gmail.com",
+    phone: "0527645609",
+    tickets: ["tick30","tick39","tick16"],
+    ID_number: "199843266"
+  },
+  {
+    fullName: "שרה קלר",
+    email: "sara.klar@gmail.com",
+    phone: "0527633010",
+    tickets: ["tick17", "tick18", "tick19", "tick25", "tick40"],
+    ID_number: "398452167"
+  }
+])
+אירגונים///////////////////////////////////////////////////////////////////////////////////////////////////
+db.organizers.insertMany([
+  {
+    _id: 1,
+    name: "תפארת",
+    contactPerson: "מנהל הפקות",
+    phone: "03-3140010",
+    email: "info@tiferet.co.il",
+    address: {
+      city: "ירושלים",
+      street: "שדרות האמוראים",
+      number: 32
+    }
+  },
+  {
+    _id: 2,
+    name: "גלאטיקט",
+    contactPerson: "ישראל גל",
+    phone: "03-5001234",
+    email: "support@glatticket.co.il",
+    address: {
+      city: "בני ברק",
+      street: "עוזיאל",
+      number: 10
+    }
+  },
+  {
+    _id: 3,
+    name: "גלאטיול",
+    contactPerson: "שרה כהן",
+    phone: "02-5432100",
+    email: "events@glatiul.co.il",
+    address: {
+      city: "מודיעין עילית",
+      street: "רבי עקיבא",
+      number: 12
+    }
+  },
+  {
+    _id: 4,
+    name: "סטייל הפקות",
+    contactPerson: "משה טל",
+    phone: "054-6789123",
+    email: "info@style1.co.il",
+    address: {
+      city: "אלעד",
+      street: "חזון איש",
+      number: 41
+    }
+  },
+  {
+    _id: 5,
+    name: "צבעים הפקות",
+    contactPerson: "רחל לוי",
+    phone: "050-1112233",
+    email: "office@tzvaim.com",
+    address: {
+      city: "ירושלים",
+      street: "מלכי ישראל",
+      number: 18
+    }
+  },
+  {
+    _id: 6,
+    name: "קו רקיע",
+    contactPerson: "שמואל ברקוביץ",
+    phone: "03-7775551",
+    email: "rakia@sky.org.il",
+    address: {
+      city: "בני ברק",
+      street: "הרב שך",
+      number: 22
+    }
+  }
+])

@@ -1,0 +1,108 @@
+גיפיטייייי
+✅ הקדמה על אינדקס:
+js
+Copy
+Edit
+db.tickets.createIndex({eventId:1, purchaseDate:1})
+זה יוצר אינדקס מורכב על שני שדות:
+
+eventId — מזהה האירוע
+
+purchaseDate — תאריך רכישת הכרטיס
+
+📌 המשמעות:
+האינדקס הזה נועד לייעל חיפושים שמשתמשים בשני השדות יחד. לדוגמה: שליפת כל הכרטיסים לאירוע מסוים לפי תאריך רכישה.
+
+✅ שאילתה 1 – סופרת כמה כרטיסים נמכרו לכל אירוע:
+js
+Copy
+Edit
+db.tickets.explain().aggregate([
+  { $group: { _id: "$eventId", totalTickets: { $sum: 1 } } },
+  { $sort: { totalTickets: -1 } },
+  { $limit: 2 }
+])
+📌 הסבר שלב שלב:
+
+$group: מאחד את המסמכים לפי eventId (כל אירוע).
+
+totalTickets: {$sum:1} סופר כמה כרטיסים יש לכל אירוע.
+
+$sort: ממיין את התוצאות לפי מספר הכרטיסים (מהכי הרבה להכי מעט).
+
+$limit: מציג רק את שני האירועים עם הכי הרבה כרטיסים.
+
+.explain(): מסביר איך MongoDB מריץ את השאילתה (לבדיקת ביצועים).
+
+✅ שאילתה 2 – כל הכרטיסים לאירוע מסוים, אחרי תאריך מסוים:
+js
+Copy
+Edit
+db.tickets.explain().aggregate([
+  {
+    $match: {
+      purchaseDate: { $gte: ISODate("2025-07-01T00:00:00Z") },
+      eventId: 6
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      ticketId: 1,
+      buyerName: 1,
+      "seat.section": 1
+    }
+  }
+])
+📌 הסבר שלב שלב:
+
+$match: מסנן רק את הכרטיסים:
+
+שנקנו אחרי או בתאריך 1 ביולי 2025.
+
+ושייכים לאירוע שמספרו 6.
+
+$project: בוחר אילו שדות להחזיר:
+
+לא מחזיר את _id
+
+מחזיר רק: ticketId, buyerName, ו- seat.section.
+
+.explain() – בודק אם השאילתה משתמשת באינדקס שיצרת (רלוונטי בזכות השדות eventId ו-purchaseDate).
+
+✅ שאילתה 3 – מצרפת משתמשים עם הכרטיסים שלהם:
+js
+Copy
+Edit
+db.users.aggregate([
+  {
+    $lookup: {
+      from: "tickets",
+      localField: "tickets",
+      foreignField: "ticketId",
+      as: "userTickets"
+    }
+  }
+])
+📌 הסבר:
+
+$lookup: מחבר בין אוסף users לאוסף tickets.
+
+localField: מתוך users, לוקח את השדה tickets (מערך של מזהי כרטיסים).
+
+foreignField: משווה ל- ticketId באוסף tickets.
+
+as: "userTickets" – מוסיף לכל משתמש שדה חדש שנקרא userTickets ובו נמצאים כל הכרטיסים שהוא רכש.
+
+רוצה שאעזור לך לנסח דוח הגשה של החלק הזה או לשלב את זה בתוך קובץ? 💡
+או אולי לבנות את זה כסכמה ברורה של מה כל חלק בפרויקט עושה?
+
+
+
+
+
+
+
+
+
+Ask ChatGPT
